@@ -1,0 +1,6 @@
+rootProject.name = 'microframework-demo'
+
+file('subproject').eachDir { dir ->
+    include dir.name
+    project(":${dir.name}").projectDir = dir
+}

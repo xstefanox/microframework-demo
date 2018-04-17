@@ -1,0 +1,81 @@
+buildscript {
+    ext.kotlinVersion = '1.2.40'
+}
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.2.40' apply false
+}
+
+group 'io.github.xstefanox'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'idea'
+
+subprojects {
+
+    apply plugin: 'kotlin'
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: kotlinVersion
+        compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+        compile group: 'io.github.microutils', name: 'kotlin-logging', version: '1.5.4'
+
+    }
+
+    compileKotlin {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+
+        kotlinOptions {
+            jvmTarget = "1.8"
+            apiVersion = "1.1"
+            languageVersion = "1.1"
+        }
+    }
+}
+
+project(':core') {
+
+}
+
+project(':rest') {
+    dependencies {
+        compile project(':core')
+        implementation group: 'io.undertow', name: 'undertow-core', version: '2.0.4.Final'
+    }
+}
+
+project(':backend') {
+    dependencies {
+        compile project(':core')
+        implementation group: 'org.apache.camel', name: 'camel-core', version: '2.21.0'
+    }
+}
+
+project(':cli') {
+
+    apply plugin: 'application'
+
+    mainClassName = 'io.github.xstefanox.demo.mf.cli.Main'
+
+    dependencies {
+        compile project(':core')
+    }
+}
+
+project(':service') {
+
+    apply plugin: 'application'
+
+    mainClassName = 'io.github.xstefanox.demo.mf.Main'
+
+    dependencies {
+        compile project(':backend')
+        compile project(':rest')
+    }
+}
+
