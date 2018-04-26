@@ -3,22 +3,39 @@ package io.github.xstefanox.demo.mf.backend
 import io.github.xstefanox.demo.mf.backend.route.SchedulerRouteBuilder
 import mu.KLogging
 import org.apache.camel.main.Main
+import org.apache.ignite.Ignite
+import org.apache.ignite.cache.CacheAtomicityMode
+import org.apache.ignite.configuration.CacheConfiguration
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
+import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
+import java.util.*
+import javax.cache.Cache
+import javax.cache.expiry.CreatedExpiryPolicy
+import javax.cache.expiry.Duration
 
 val BACKEND_MODULE = Kodein.Module {
-    bind<BackendService>() with singleton { BackendService() }
+    bind<BackendService>() with singleton { BackendService(instance()) }
+    bind<CacheConfiguration<Date, Date>>() with singleton {
+        val cacheConfiguration = CacheConfiguration<Date, Date>()
+        cacheConfiguration.name = "CLEANUP"
+        cacheConfiguration.atomicityMode = CacheAtomicityMode.TRANSACTIONAL
+        cacheConfiguration.setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.ONE_MINUTE))
+        cacheConfiguration
+    }
+    bind<Cache<Date, Date>>() with singleton { instance<Ignite>().getOrCreateCache(instance<CacheConfiguration<Date, Date>>()) }
+    bind<IgniteIdempotentRepository<Date>>() with singleton { IgniteIdempotentRepository<Date>(instance()) }
+    bind<SchedulerRouteBuilder>() with singleton { SchedulerRouteBuilder(instance()) }
 }
 
-class BackendService {
+class BackendService(private val schedulerRouteBuilder: SchedulerRouteBuilder) {
 
     private val camel = Main()
 
     operator fun invoke() {
         logger.info { "starting" }
-        camel.addRouteBuilder(SchedulerRouteBuilder())
-//        camel.ad
+        camel.addRouteBuilder(schedulerRouteBuilder)
         camel.run()
     }
 
