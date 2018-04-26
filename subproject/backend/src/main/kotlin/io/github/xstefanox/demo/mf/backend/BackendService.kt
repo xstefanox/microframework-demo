@@ -10,7 +10,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
-import java.util.*
+import java.util.Date
 import javax.cache.Cache
 import javax.cache.expiry.CreatedExpiryPolicy
 import javax.cache.expiry.Duration
@@ -18,11 +18,11 @@ import javax.cache.expiry.Duration
 val BACKEND_MODULE = Kodein.Module {
     bind<BackendService>() with singleton { BackendService(instance()) }
     bind<CacheConfiguration<Date, Date>>() with singleton {
-        val cacheConfiguration = CacheConfiguration<Date, Date>()
-        cacheConfiguration.name = "CLEANUP"
-        cacheConfiguration.atomicityMode = CacheAtomicityMode.TRANSACTIONAL
-        cacheConfiguration.setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.ONE_MINUTE))
-        cacheConfiguration
+        CacheConfiguration<Date, Date>().apply {
+            name = "CLEANUP"
+            atomicityMode = CacheAtomicityMode.TRANSACTIONAL
+            setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.ONE_MINUTE))
+        }
     }
     bind<Cache<Date, Date>>() with singleton { instance<Ignite>().getOrCreateCache(instance<CacheConfiguration<Date, Date>>()) }
     bind<IgniteIdempotentRepository<Date>>() with singleton { IgniteIdempotentRepository<Date>(instance()) }

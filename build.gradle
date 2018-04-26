@@ -42,6 +42,7 @@ subprojects {
 project(':core') {
     dependencies {
         compile group: 'org.apache.ignite', name: 'ignite-core', version: '2.4.0'
+        compile group: 'org.apache.ignite', name: 'ignite-slf4j', version: '2.4.0'
     }
 }
 
