@@ -54,6 +54,7 @@ project(':backend') {
     dependencies {
         compile project(':core')
         implementation group: 'org.apache.camel', name: 'camel-core', version: '2.21.0'
+        implementation group: 'org.apache.ignite', name: 'ignite-core', version: '2.4.0'
     }
 }
 

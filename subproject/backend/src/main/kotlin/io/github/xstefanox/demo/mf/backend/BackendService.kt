@@ -1,5 +1,6 @@
 package io.github.xstefanox.demo.mf.backend
 
+import io.github.xstefanox.demo.mf.backend.route.SchedulerRouteBuilder
 import mu.KLogging
 import org.apache.camel.main.Main
 import org.kodein.di.Kodein
@@ -16,6 +17,8 @@ class BackendService {
 
     operator fun invoke() {
         logger.info { "starting" }
+        camel.addRouteBuilder(SchedulerRouteBuilder())
+//        camel.ad
         camel.run()
     }
 
