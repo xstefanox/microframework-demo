@@ -2,7 +2,30 @@ version: '3'
 
 services:
 
+  hazelcast:
+    image: hazelcast/hazelcast:3.9.4
+    ports:
+      - 10001:5701
+    links:
+      - hazelcast-mc
+    volumes:
+      - ./hazelcast.xml:/opt/hazelcast/hazelcast.xml
+    environment:
+      JAVA_OPTS: -Dhazelcast.config=/opt/hazelcast/hazelcast.xml
+
+  hazelcast-mc:
+    image: hazelcast/management-center:3.9.4
+    ports:
+      - 10002:8080
+
+  iwc:
+    image: apacheignite/web-console-standalone:2.4.0
+    ports:
+      - 10003:80
+      - 10004:3001
+
   ignite:
-    image: apacheignite/ignite:2.4.0
+    build:
+      context: ./docker/ignite
     ports:
       - 10000:47500

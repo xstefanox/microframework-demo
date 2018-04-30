@@ -1,16 +1,18 @@
 package io.github.xstefanox.demo.mf.backend
 
+import com.hazelcast.cache.ICache
 import org.apache.camel.spi.IdempotentRepository
 import javax.cache.Cache
 
-class IgniteIdempotentRepository<T>(private val cache: Cache<T, T>) : IdempotentRepository<T> {
+class JCacheIdempotentRepository<T>(private val cache: Cache<T, T>) : IdempotentRepository<T> {
 
     override fun contains(key: T): Boolean {
         return cache.containsKey(key)
     }
 
     override fun add(key: T): Boolean {
-        return !cache.putIfAbsent(key, key)
+        println(cache.unwrap(ICache::class.java).size())
+        return cache.putIfAbsent(key, key)
     }
 
     override fun clear() {

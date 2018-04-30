@@ -2,39 +2,28 @@
 
 package io.github.xstefanox.demo.mf.core
 
+import com.hazelcast.client.HazelcastClient
+import com.hazelcast.client.config.ClientConfig
+import com.hazelcast.core.HazelcastInstance
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
-import org.apache.ignite.Ignite
-import org.apache.ignite.Ignition
-import org.apache.ignite.configuration.IgniteConfiguration
-import org.apache.ignite.logger.slf4j.Slf4jLogger
-import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi
-import org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 
 val CORE_MODULE = Kodein.Module {
+
     bind<Config>() with singleton { ConfigFactory.load() }
+
     bind<CoreConfiguration>() with singleton { CoreConfiguration(instance()) }
-    bind<Ignite>() with singleton {
 
-        val coreConfiguration = instance<CoreConfiguration>()
+    bind<HazelcastInstance>() with singleton {
 
-        val tcpDiscoveryVmIpFinder = TcpDiscoveryVmIpFinder()
-        tcpDiscoveryVmIpFinder.setAddresses(coreConfiguration.ignite.addresses)
+        val clientConfig = ClientConfig()
+        clientConfig.networkConfig.addresses = listOf("localhost:10001")
+        clientConfig.setProperty("hazelcast.logging.type", "slf4j")
 
-        val tcpDiscoverySpi = TcpDiscoverySpi()
-        tcpDiscoverySpi.ipFinder = tcpDiscoveryVmIpFinder
-
-        val slf4jLogger = Slf4jLogger()
-
-        val igniteConfiguration = IgniteConfiguration()
-        igniteConfiguration.isClientMode = true
-        igniteConfiguration.discoverySpi = tcpDiscoverySpi
-        igniteConfiguration.gridLogger = slf4jLogger
-
-        Ignition.start(igniteConfiguration)
+        HazelcastClient.newHazelcastClient(clientConfig)
     }
 }
