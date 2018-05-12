@@ -9,7 +9,7 @@ import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.kodein.di.generic.instance
 
-class RestServiceTest : Spek({
+object RestServiceTest : Spek({
 
     val service by TEST_KODEIN.instance<RestService>()
 

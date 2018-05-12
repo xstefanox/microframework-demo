@@ -3,7 +3,7 @@ package io.github.xstefanox.demo.mf
 import assertk.assert
 import assertk.assertions.isInstanceOf
 import io.restassured.RestAssured
-import io.undertow.util.StatusCodes.OK
+import org.apache.http.HttpStatus.SC_OK
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
@@ -30,7 +30,7 @@ object MainServiceTest : Spek({
                 RestAssured.get("/hello-world")
                     .then()
                     .assertThat()
-                    .statusCode(OK)
+                    .statusCode(SC_OK)
             }
         }
     }
