@@ -1,8 +1,9 @@
 package io.github.xstefanox.demo.mf.rest
 
 import io.github.xstefanox.demo.mf.core.Service
+import io.github.xstefanox.demo.mf.rest.handler.RestHandler
+import io.undertow.Handlers
 import io.undertow.Undertow
-import io.undertow.util.Headers.CONTENT_TYPE
 import mu.KLogging
 
 class RestService(restConfiguration: RestConfiguration) : Service {
@@ -14,10 +15,10 @@ class RestService(restConfiguration: RestConfiguration) : Service {
 
         undertow = Undertow.builder()
             .addHttpListener(restConfiguration.port, restConfiguration.host)
-            .setHandler({ exchange ->
-                exchange.responseHeaders.put(CONTENT_TYPE, "text/plain")
-                exchange.responseSender.send("Hello World")
-            }).build()
+            .setHandler(RestHandler())
+            .build()
+
+        Handlers.path()
     }
 
     override fun start() {

@@ -1,25 +1,20 @@
 package io.github.xstefanox.demo.mf
 
 import io.github.xstefanox.demo.mf.backend.BackendService
+import io.github.xstefanox.demo.mf.core.Service
 import io.github.xstefanox.demo.mf.rest.RestService
-import java.io.Closeable
 
 class MainService(
     private val restService: RestService,
     private val backend: BackendService
-) : Closeable {
+) : Service {
 
-    init {
-
-        Runtime.getRuntime().addShutdownHook(Thread({
-            close()
-        }))
-
+    override fun start() {
         restService.start()
         backend.start()
     }
 
-    override fun close() {
+    override fun stop() {
         restService.stop()
         backend.stop()
     }

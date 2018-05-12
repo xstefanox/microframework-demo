@@ -3,7 +3,7 @@ package io.github.xstefanox.demo.mf
 import assertk.assert
 import assertk.assertions.isInstanceOf
 import io.restassured.RestAssured
-import org.apache.http.HttpStatus.SC_OK
+import io.undertow.util.StatusCodes.OK
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
@@ -13,26 +13,32 @@ import java.net.ConnectException
 
 object MainServiceTest : Spek({
 
+    val service by TEST_SERVICE_KODEIN.instance<MainService>()
+
     given("the main service has been started") {
 
-        val service by TEST_KODEIN.instance<MainService>()
+        beforeGroup {
+            service.start()
+        }
+
+        afterGroup {
+            service.stop()
+        }
 
         on("requesting the base uri") {
             it("should respond with success") {
-                service.use {
-                    RestAssured.get("/")
-                        .then()
-                        .assertThat()
-                        .statusCode(SC_OK)
-                }
+                RestAssured.get("/hello-world")
+                    .then()
+                    .assertThat()
+                    .statusCode(OK)
             }
         }
     }
 
     given("the main service has been stopped") {
 
-        val service by TEST_KODEIN.instance<MainService>()
-        service.close()
+        service.start()
+        service.stop()
 
         on("requesting the base uri") {
             it("should not connect") {

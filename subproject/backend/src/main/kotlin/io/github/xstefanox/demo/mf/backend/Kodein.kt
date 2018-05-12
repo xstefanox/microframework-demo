@@ -9,3 +9,7 @@ import org.kodein.di.generic.singleton
 val BACKEND_MODULE = Kodein.Module {
     bind<BackendService>() with singleton { BackendService() }
 }
+
+val BACKEND_KODEIN = Kodein {
+    import(BACKEND_MODULE)
+}

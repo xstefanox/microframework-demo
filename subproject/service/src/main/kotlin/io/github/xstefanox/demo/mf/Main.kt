@@ -7,14 +7,19 @@ import java.util.concurrent.locks.ReentrantLock
 
 fun main(args: Array<String>) {
 
-    val service by KODEIN.instance<MainService>()
+    val service by SERVICE_KODEIN.instance<MainService>()
 
-    service.use {
+    val lock = ReentrantLock()
+    val condition = lock.newCondition()
 
-        val lock = ReentrantLock()
-        val condition = lock.newCondition()
+    Runtime.getRuntime().addShutdownHook(Thread({
+        service.stop()
+    }))
 
-        lock.lock()
-        condition.await()
-    }
+    service.start()
+
+    lock.lock()
+    condition.await()
+
+    service.stop()
 }
