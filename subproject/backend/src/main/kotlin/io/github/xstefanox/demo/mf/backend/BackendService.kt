@@ -1,22 +1,21 @@
 package io.github.xstefanox.demo.mf.backend
 
+import io.github.xstefanox.demo.mf.core.Service
 import mu.KLogging
-import org.apache.camel.main.Main
-import org.kodein.di.Kodein
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.singleton
+import org.apache.camel.impl.DefaultCamelContext
 
-val BACKEND_MODULE = Kodein.Module {
-    bind<BackendService>() with singleton { BackendService() }
-}
+class BackendService : Service {
 
-class BackendService {
+    private val camel = DefaultCamelContext()
 
-    private val camel = Main()
+    override fun start() {
+        logger.info { "starting backend service" }
+        camel.start()
+    }
 
-    operator fun invoke() {
-        logger.info { "starting" }
-        camel.run()
+    override fun stop() {
+        logger.info { "stopping backend service" }
+        camel.stop()
     }
 
     companion object : KLogging()

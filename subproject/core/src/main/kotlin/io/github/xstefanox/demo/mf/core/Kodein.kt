@@ -1,4 +1,4 @@
-@file:JvmName("KodeinModule")
+@file:JvmName("Kodein")
 
 package io.github.xstefanox.demo.mf.core
 
