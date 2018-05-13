@@ -6,7 +6,7 @@ import io.undertow.Handlers
 import io.undertow.Undertow
 import mu.KLogging
 
-class RestService(restConfiguration: RestConfiguration) : Service {
+class RestService(private val restConfiguration: RestConfiguration) : Service {
 
     private val undertow: Undertow
 
@@ -22,7 +22,7 @@ class RestService(restConfiguration: RestConfiguration) : Service {
     }
 
     override fun start() {
-        logger.info { "starting rest service" }
+        logger.info { "starting rest service, listening on ${restConfiguration.host}:${restConfiguration.port}" }
         undertow.start()
     }
 

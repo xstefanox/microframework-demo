@@ -4,12 +4,16 @@ import io.github.xstefanox.demo.mf.core.Service
 import mu.KLogging
 import org.apache.camel.impl.DefaultCamelContext
 
-class BackendService : Service {
+class BackendService(private val backendConfiguration: BackendConfiguration) : Service {
 
     private val camel = DefaultCamelContext()
 
+    init {
+        camel.name = backendConfiguration.name
+    }
+
     override fun start() {
-        logger.info { "starting backend service" }
+        logger.info { "starting backend service, camel name = ${backendConfiguration.name}" }
         camel.start()
     }
 
