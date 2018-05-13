@@ -1,5 +1,7 @@
 buildscript {
     ext.kotlinVersion = '1.2.41'
+    ext.junitVersion = '1.2.0'
+    ext.spekVersion = '1.1.5'
 }
 
 plugins {
@@ -15,6 +17,12 @@ subprojects {
 
     apply plugin: 'kotlin'
 
+    test {
+        useJUnitPlatform {
+            includeEngines 'spek'
+        }
+    }
+
     repositories {
         jcenter()
     }
@@ -27,11 +35,12 @@ subprojects {
         implementation group: 'org.kodein.di', name: 'kodein-di-generic-jvm', version: '5.0.0'
 
         testRuntimeOnly group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlinVersion
-        testRuntimeOnly(group: 'org.jetbrains.spek', name: 'spek-junit-platform-engine', version: '1.1.5') {
+        testRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-runner', version: junitVersion
+        testRuntimeOnly(group: 'org.jetbrains.spek', name: 'spek-junit-platform-engine', version: spekVersion) {
             exclude group: 'org.junit.platform'
             exclude group: 'org.jetbrains.kotlin'
         }
-        testImplementation(group: 'org.jetbrains.spek', name: 'spek-api', version: '1.1.5') {
+        testImplementation(group: 'org.jetbrains.spek', name: 'spek-api', version: spekVersion) {
             exclude group: 'org.jetbrains.kotlin'
         }
         testImplementation(group: 'com.willowtreeapps.assertk', name: 'assertk', version: '0.10') {
