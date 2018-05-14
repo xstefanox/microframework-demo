@@ -6,6 +6,7 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.2.41' apply false
+    id 'com.github.johnrengelman.shadow' version '2.0.4' apply false
 }
 
 group 'io.github.xstefanox'
@@ -82,6 +83,7 @@ project(':backend') {
 project(':cli') {
 
     apply plugin: 'application'
+    apply plugin: 'com.github.johnrengelman.plugin-shadow'
 
     mainClassName = 'io.github.xstefanox.demo.mf.cli.Main'
 
@@ -93,6 +95,7 @@ project(':cli') {
 project(':service') {
 
     apply plugin: 'application'
+    apply plugin: 'com.github.johnrengelman.plugin-shadow'
 
     mainClassName = 'io.github.xstefanox.demo.mf.Main'
 
@@ -102,3 +105,7 @@ project(':service') {
     }
 }
 
+task shadow {
+    dependsOn("service:shadowJar")
+    dependsOn("cli:shadowJar")
+}
