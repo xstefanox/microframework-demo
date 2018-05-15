@@ -83,7 +83,7 @@ project(':backend') {
 project(':cli') {
 
     apply plugin: 'application'
-    apply plugin: 'com.github.johnrengelman.plugin-shadow'
+    apply plugin: 'com.github.johnrengelman.shadow'
 
     mainClassName = 'io.github.xstefanox.demo.mf.cli.Main'
 
@@ -95,7 +95,7 @@ project(':cli') {
 project(':service') {
 
     apply plugin: 'application'
-    apply plugin: 'com.github.johnrengelman.plugin-shadow'
+    apply plugin: 'com.github.johnrengelman.shadow'
 
     mainClassName = 'io.github.xstefanox.demo.mf.Main'
 
