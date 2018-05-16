@@ -89,6 +89,7 @@ project(':cli') {
 
     dependencies {
         compile project(':core')
+        implementation group: 'com.github.ajalt', name: 'clikt', version: '1.2.0'
     }
 }
 
