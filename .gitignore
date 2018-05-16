@@ -3,3 +3,4 @@
 /build/
 /subproject/*/build/
 /subproject/*/out/
+application.conf

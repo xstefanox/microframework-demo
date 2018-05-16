@@ -9,5 +9,8 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.singleton
 
 val CORE_MODULE = Kodein.Module {
-    bind<Config>() with singleton { ConfigFactory.load() }
+    bind<Config>() with singleton {
+        System.setProperty("config.file", "application.conf")
+        ConfigFactory.load()
+    }
 }
