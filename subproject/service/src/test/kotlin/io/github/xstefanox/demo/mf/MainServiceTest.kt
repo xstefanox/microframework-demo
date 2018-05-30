@@ -2,6 +2,7 @@ package io.github.xstefanox.demo.mf
 
 import assertk.assert
 import assertk.assertions.isInstanceOf
+import io.github.xstefanox.demo.mf.rest.RestConfiguration
 import io.restassured.RestAssured
 import org.apache.http.HttpStatus.SC_OK
 import org.jetbrains.spek.api.Spek
@@ -14,6 +15,10 @@ import java.net.ConnectException
 object MainServiceTest : Spek({
 
     val service by TEST_SERVICE_KODEIN.instance<MainService>()
+    val restConfiguration by TEST_SERVICE_KODEIN.instance<RestConfiguration>()
+
+    RestAssured.port = restConfiguration.port
+    RestAssured.baseURI = "http://localhost"
 
     given("the main service has been started") {
 
