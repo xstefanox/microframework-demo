@@ -69,7 +69,7 @@ project(':core') {
 project(':rest') {
     dependencies {
         compile project(':core')
-        implementation group: 'io.undertow', name: 'undertow-core', version: '2.0.6.Final'
+        implementation group: 'io.undertow', name: 'undertow-core', version: '2.0.9.Final'
     }
 }
 
