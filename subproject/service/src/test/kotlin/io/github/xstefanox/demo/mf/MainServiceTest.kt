@@ -1,18 +1,16 @@
 package io.github.xstefanox.demo.mf
 
-import assertk.assert
-import assertk.assertions.isInstanceOf
+//import assertk.assert
+//import assertk.assertions.isInstanceOf
 import io.github.xstefanox.demo.mf.rest.RestConfiguration
+import io.kotlintest.shouldThrow
+import io.kotlintest.specs.FeatureSpec
 import io.restassured.RestAssured
 import org.apache.http.HttpStatus.SC_OK
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
 import org.kodein.di.generic.instance
 import java.net.ConnectException
 
-object MainServiceTest : Spek({
+class MainServiceTest : FeatureSpec({
 
     val service by TEST_SERVICE_KODEIN.instance<MainService>()
     val restConfiguration by TEST_SERVICE_KODEIN.instance<RestConfiguration>()
@@ -20,38 +18,22 @@ object MainServiceTest : Spek({
     RestAssured.port = restConfiguration.port
     RestAssured.baseURI = "http://localhost"
 
-    given("the main service has been started") {
+    feature("service startup and shutdown") {
 
-        beforeGroup {
-            service.start()
-        }
+        scenario("is the service is started, it should respond") {
 
-        afterGroup {
-            service.stop()
-        }
-
-        on("requesting the base uri") {
-            it("should respond with success") {
-                RestAssured.get("/hello-world")
+            RestAssured.get("/hello-world")
                     .then()
                     .assertThat()
                     .statusCode(SC_OK)
-            }
         }
-    }
 
-    given("the main service has been stopped") {
+        scenario("is the service has been stopped, it should not respond") {
 
-        service.start()
-        service.stop()
+            service.stop()
 
-        on("requesting the base uri") {
-            it("should not connect") {
-                assert {
-                    RestAssured.get("/")
-                }.thrownError {
-                    isInstanceOf(ConnectException::class.java)
-                }
+            shouldThrow<ConnectException> {
+                RestAssured.get("/")
             }
         }
     }
