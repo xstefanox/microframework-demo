@@ -10,7 +10,7 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 
-val SERVICE_MODULE = Kodein.Module {
+val SERVICE_MODULE = Kodein.Module("SERVICE") {
     bind<MainService>() with singleton { MainService(instance(), instance()) }
 }
 
