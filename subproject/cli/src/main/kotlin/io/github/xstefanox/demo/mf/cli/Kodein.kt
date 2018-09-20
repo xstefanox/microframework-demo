@@ -11,7 +11,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.singleton
 
-val CLI_MODULE = Kodein.Module {
+val CLI_MODULE = Kodein.Module("CLI") {
     bind<CliktCommand>() with singleton {
         ParentCommand()
                 .subcommands(HelloWorld())

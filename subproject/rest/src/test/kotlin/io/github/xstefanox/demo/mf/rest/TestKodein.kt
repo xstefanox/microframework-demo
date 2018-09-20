@@ -8,7 +8,7 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 
-val TEST_SERVICE_MODULE = Kodein.Module(allowSilentOverride = true) {
+val TEST_SERVICE_MODULE = Kodein.Module("TEST", allowSilentOverride = true) {
     bind<RestService>() with provider { RestService(instance()) }
 }
 

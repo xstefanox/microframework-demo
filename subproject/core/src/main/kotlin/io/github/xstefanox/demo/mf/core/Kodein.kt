@@ -12,7 +12,7 @@ import java.nio.file.FileSystem
 import java.nio.file.FileSystems
 import java.nio.file.Files
 
-val CORE_MODULE = Kodein.Module {
+val CORE_MODULE = Kodein.Module("CORE") {
 
     bind<FileSystem>() with singleton { FileSystems.getDefault() }
 
