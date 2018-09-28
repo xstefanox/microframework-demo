@@ -3,7 +3,7 @@ package io.github.xstefanox.demo.mf.backend
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 
-class BackendConfiguration(private val config: Config) {
+class BackendConfiguration(config: Config) {
 
     val name: String
 

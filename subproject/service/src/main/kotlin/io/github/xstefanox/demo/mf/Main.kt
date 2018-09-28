@@ -12,9 +12,9 @@ fun main(args: Array<String>) {
     val lock = ReentrantLock()
     val condition = lock.newCondition()
 
-    Runtime.getRuntime().addShutdownHook(Thread({
+    Runtime.getRuntime().addShutdownHook(Thread {
         service.stop()
-    }))
+    })
 
     service.start()
 
