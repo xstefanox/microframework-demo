@@ -5,7 +5,7 @@ import io.github.xstefanox.demo.mf.rest.RestService
 import io.kotlintest.AbstractProjectConfig
 import org.kodein.di.generic.instance
 
-@Suppress("unused")   // used by kotlintest
+@Suppress("unused") // used by kotlintest
 object ProjectConfig : AbstractProjectConfig() {
 
     private val service by TEST_SERVICE_KODEIN.instance<RestService>()

@@ -1,7 +1,5 @@
 package io.github.xstefanox.demo.mf
 
-//import assertk.assert
-//import assertk.assertions.isInstanceOf
 import io.github.xstefanox.demo.mf.rest.RestConfiguration
 import io.kotlintest.shouldThrow
 import io.kotlintest.specs.FeatureSpec
