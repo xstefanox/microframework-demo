@@ -1,5 +1,7 @@
 buildscript {
     ext.kotlinVersion = '1.3.20'
+    ext.undertowVersion = '2.0.16.Final'
+    ext.underkowVersion = '2.1.1'
 }
 
 plugins {
@@ -77,9 +79,27 @@ project(':core') {
 project(':rest') {
     dependencies {
         implementation project(':core')
-        implementation group: 'io.undertow', name: 'undertow-core', version: '2.0.16.Final'
+        implementation group: 'io.undertow', name: 'undertow-core', version: undertowVersion
 
         testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '3.3.0'
+    }
+}
+
+project(':rest-user') {
+
+    apply plugin: 'application'
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    mainClassName = 'io.github.xstefanox.demo.mf.rest.user.Main'
+
+    dependencies {
+        implementation project(':core')
+        implementation group: 'io.undertow', name: 'undertow-core', version: undertowVersion
+        implementation group: 'io.github.xstefanox', name: 'underkow', version: underkowVersion
+    }
+
+    shadowJar {
+        archiveBaseName.set('service')
     }
 }
 

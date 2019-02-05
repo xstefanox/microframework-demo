@@ -1,1 +1,5 @@
 root = true
+
+[*.kt]
+# noinspection EditorConfigKeyCorrectness
+continuation_indent_size = 4
