@@ -68,6 +68,3 @@ class UserController {
 
 val HttpServerExchange.path: Map<String, String>
     get() = getAttachment(PathTemplateMatch.ATTACHMENT_KEY).parameters
-
-
-
