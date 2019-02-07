@@ -83,6 +83,7 @@ project(':platform') {
             api group: 'io.rest-assured', name: 'rest-assured', version: '3.3.0'
             api group: 'org.apache.camel', name: 'camel-core', version: '2.23.1'
             api group: 'com.github.ajalt', name: 'clikt', version: '1.6.0'
+            api group: 'org.litote.kmongo', name: 'kmongo-coroutine', version: '3.9.2'
         }
     }
 }
@@ -116,6 +117,7 @@ project(':rest-user') {
         implementation project(':core')
         implementation group: 'io.undertow', name: 'undertow-core'
         implementation group: 'io.github.xstefanox', name: 'underkow'
+        implementation group: 'org.litote.kmongo', name: 'kmongo-coroutine'
     }
 
     shadowJar {

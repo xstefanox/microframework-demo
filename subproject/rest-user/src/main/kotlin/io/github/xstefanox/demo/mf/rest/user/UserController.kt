@@ -1,6 +1,7 @@
 package io.github.xstefanox.demo.mf.rest.user
 
-import io.github.xstefanox.demo.mf.core.Id
+import com.mongodb.async.client.MongoCollection
+import com.mongodb.async.client.MongoDatabase
 import io.github.xstefanox.demo.mf.core.randomId
 import io.github.xstefanox.demo.mf.core.randomString
 import io.github.xstefanox.demo.mf.core.toID
@@ -9,21 +10,34 @@ import io.undertow.util.Headers.CONTENT_TYPE
 import io.undertow.util.PathTemplateMatch
 import io.undertow.util.StatusCodes.CREATED
 import io.undertow.util.StatusCodes.NOT_FOUND
+import org.litote.kmongo.async.getCollection
+import org.litote.kmongo.coroutine.deleteOneById
+import org.litote.kmongo.coroutine.findOneById
+import org.litote.kmongo.coroutine.forEach
+import org.litote.kmongo.coroutine.insertOne
 
-class UserController {
+class UserController(private val mongoDB: MongoDatabase) {
 
-    private val users = mutableMapOf<Id, User>()
-
-    fun getAll(exchange: HttpServerExchange) {
-
-        exchange.responseHeaders.put(CONTENT_TYPE, "text/plain")
-        exchange.responseSender.send(users.values.sortedBy(User::id).toString())
+    private val users2: MongoCollection<User> by lazy {
+        mongoDB.getCollection<User>()
     }
 
-    fun getOne(exchange: HttpServerExchange) {
+    suspend fun getAll(exchange: HttpServerExchange) {
+
+        val result = mutableListOf<User>()
+
+        users2.find().forEach { user ->
+            result.add(user)
+        }
+
+        exchange.responseHeaders.put(CONTENT_TYPE, "text/plain")
+        exchange.responseSender.send(result.sortedBy(User::id).toString())
+    }
+
+    suspend fun getOne(exchange: HttpServerExchange) {
 
         val id = exchange.path.getValue("userId").toID()
-        val user = users[id]
+        val user = users2.findOneById(id)
 
         exchange.responseHeaders.put(CONTENT_TYPE, "text/plain")
 
@@ -35,7 +49,7 @@ class UserController {
         }
     }
 
-    fun create(exchange: HttpServerExchange) {
+    suspend fun create(exchange: HttpServerExchange) {
 
         val user = User(
             randomId(),
@@ -43,26 +57,26 @@ class UserController {
             randomString()
         )
 
-        users[user.id] = user
+        users2.insertOne(user)
 
         exchange.statusCode = CREATED
         exchange.responseHeaders.put(CONTENT_TYPE, "text/plain")
         exchange.responseSender.send(user.toString())
     }
 
-    fun delete(exchange: HttpServerExchange) {
+    suspend fun delete(exchange: HttpServerExchange) {
 
         val id = exchange.path.getValue("userId").toID()
-        val user = users.remove(id)
+
+        val result = users2.deleteOneById(id)!!
 
         exchange.responseHeaders.put(CONTENT_TYPE, "text/plain")
 
-        if (user == null) {
+        if (result.deletedCount == 0L) {
             exchange.statusCode = NOT_FOUND
-            exchange.responseSender.send("")
-        } else {
-            exchange.responseSender.send(user.toString())
         }
+
+        exchange.responseSender.send("")
     }
 }
 
