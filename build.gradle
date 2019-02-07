@@ -129,6 +129,32 @@ project(':rest-user') {
     }
 }
 
+project(':rest-purchase') {
+
+    apply plugin: 'application'
+    apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'com.palantir.docker'
+
+    mainClassName = 'io.github.xstefanox.demo.mf.rest.purchase.Main'
+
+    dependencies {
+        implementation platform(project(':platform'))
+        implementation project(':core')
+        implementation group: 'io.undertow', name: 'undertow-core'
+        implementation group: 'io.github.xstefanox', name: 'underkow'
+    }
+
+    shadowJar {
+        archiveBaseName.set('service')
+    }
+
+    docker {
+        name = "xstefanox/rest-purchase"
+        files tasks.shadowJar.outputs
+        buildArgs([jar: "service.jar"])
+    }
+}
+
 project(':backend') {
     dependencies {
         implementation platform(project(':platform'))
@@ -172,4 +198,5 @@ task shadow {
     dependsOn("service:shadowJar")
     dependsOn("cli:shadowJar")
     dependsOn("rest-user:shadowJar")
+    dependsOn("rest-purchase:shadowJar")
 }
