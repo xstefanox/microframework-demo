@@ -2,6 +2,7 @@
 
 package io.github.xstefanox.demo.mf.rest.purchase
 
+import com.rabbitmq.client.ConnectionFactory
 import io.github.xstefanox.demo.mf.core.CORE_MODULE
 import io.github.xstefanox.demo.mf.core.loadConfiguration
 import io.github.xstefanox.underkow.undertow
@@ -19,7 +20,7 @@ val REST_MODULE = Kodein.Module("REST") {
 
     bind<RestConfiguration>() with singleton { RestConfiguration(loadConfiguration("rest")) }
 
-    bind<PurchaseController>() with singleton { PurchaseController(instance()) }
+    bind<PurchaseController>() with singleton { PurchaseController(instance(), instance(), instance()) }
 
     bind<Undertow>() with singleton {
 
@@ -48,6 +49,20 @@ val REST_MODULE = Kodein.Module("REST") {
         }
 
         database
+    }
+
+    bind<ConnectionFactory>() with singleton {
+
+        val rabbitmq = instance<RestConfiguration>().rabbitmq
+
+        val connectionFactory = ConnectionFactory()
+        connectionFactory.username = rabbitmq.username
+        connectionFactory.password = rabbitmq.password
+        connectionFactory.host = rabbitmq.hostname
+        connectionFactory.port = rabbitmq.port
+        connectionFactory.virtualHost = rabbitmq.vhost
+
+        connectionFactory
     }
 }
 

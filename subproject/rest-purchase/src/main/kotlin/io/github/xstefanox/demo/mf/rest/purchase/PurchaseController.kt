@@ -1,5 +1,9 @@
 package io.github.xstefanox.demo.mf.rest.purchase
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.rabbitmq.client.AMQP
+import com.rabbitmq.client.Channel
+import com.rabbitmq.client.ConnectionFactory
 import io.github.xstefanox.demo.mf.core.randomId
 import io.github.xstefanox.demo.mf.core.randomString
 import io.github.xstefanox.demo.mf.rest.purchase.Purchase.State.NEW
@@ -17,7 +21,23 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PurchaseController(private val database: Database) {
+private val PROPERTIES = AMQP.BasicProperties.Builder()
+    .contentType("text/plain")
+    .build()
+
+class PurchaseController(
+    private val database: Database,
+    private val connectionFactory: ConnectionFactory,
+    private val objectMapper: ObjectMapper
+) {
+
+    private val connection by lazy {
+        connectionFactory.newConnection()
+    }
+
+    private val channel: Channel by lazy {
+        connection.createChannel()
+    }
 
     fun getAll(exchange: HttpServerExchange) {
 
@@ -69,6 +89,12 @@ class PurchaseController(private val database: Database) {
                 row[state] = purchase.state
             }
         }
+
+        val message = objectMapper.writeValueAsBytes(mapOf(
+            "id" to purchase.id
+        ))
+
+        channel.basicPublish("purchases_ex", "", PROPERTIES, message)
 
         exchange.statusCode = CREATED
         exchange.responseHeaders.put(CONTENT_TYPE, "text/plain")

@@ -7,4 +7,5 @@ data class RestConfiguration(private val config: Config) {
     val port: Int = config.getInt("port")
     val host: String = config.getString("host")
     val db: URI = URI(config.getString("db"))
+    val rabbitmq: RabbitMqConfiguration = RabbitMqConfiguration(config.getConfig("rabbitmq"))
 }

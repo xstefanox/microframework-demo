@@ -87,6 +87,8 @@ project(':platform') {
             api group: 'org.litote.kmongo', name: 'kmongo-coroutine', version: '3.9.2'
             api group: 'org.jetbrains.exposed', name: 'exposed', version: '0.12.1'
             api group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
+            api group: 'com.rabbitmq', name: 'amqp-client', version: '5.6.0'
+            api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
         }
     }
 }
@@ -94,6 +96,7 @@ project(':platform') {
 project(':core') {
     dependencies {
         implementation platform(project(':platform'))
+        implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
     }
 }
 
@@ -149,6 +152,8 @@ project(':rest-purchase') {
         implementation group: 'io.github.xstefanox', name: 'underkow'
         implementation group: 'org.jetbrains.exposed', name: 'exposed'
         implementation group: 'mysql', name: 'mysql-connector-java'
+        implementation group: 'com.rabbitmq', name: 'amqp-client'
+        implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
     }
 
     shadowJar {

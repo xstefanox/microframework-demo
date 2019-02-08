@@ -2,6 +2,7 @@
 
 package io.github.xstefanox.demo.mf.core
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import org.kodein.di.Kodein
@@ -27,4 +28,6 @@ val CORE_MODULE = Kodein.Module("CORE") {
 
         ConfigFactory.load()
     }
+
+    bind<ObjectMapper>() with singleton { ObjectMapper() }
 }
