@@ -7,6 +7,7 @@ import io.github.xstefanox.demo.mf.core.loadConfiguration
 import io.github.xstefanox.underkow.undertow
 import io.undertow.Undertow
 import io.undertow.server.HttpServerExchange
+import org.jetbrains.exposed.sql.Database
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -16,7 +17,7 @@ val REST_MODULE = Kodein.Module("REST") {
 
     bind<RestConfiguration>() with singleton { RestConfiguration(loadConfiguration("rest")) }
 
-    bind<PurchaseController>() with singleton { PurchaseController() }
+    bind<PurchaseController>() with singleton { PurchaseController(instance()) }
 
     bind<Undertow>() with singleton {
 
@@ -34,6 +35,10 @@ val REST_MODULE = Kodein.Module("REST") {
                 delete("/purchases/{purchaseId}", suspending(purchaseController::delete))
             }
         }
+    }
+
+    bind<Database>() with singleton {
+        Database.connect(instance<RestConfiguration>().db.toString(), driver = "com.mysql.cj.jdbc.Driver")
     }
 }
 

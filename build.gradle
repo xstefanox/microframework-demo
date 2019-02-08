@@ -84,6 +84,8 @@ project(':platform') {
             api group: 'org.apache.camel', name: 'camel-core', version: '2.23.1'
             api group: 'com.github.ajalt', name: 'clikt', version: '1.6.0'
             api group: 'org.litote.kmongo', name: 'kmongo-coroutine', version: '3.9.2'
+            api group: 'org.jetbrains.exposed', name: 'exposed', version: '0.12.1'
+            api group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
         }
     }
 }
@@ -144,6 +146,8 @@ project(':rest-purchase') {
         implementation project(':core')
         implementation group: 'io.undertow', name: 'undertow-core'
         implementation group: 'io.github.xstefanox', name: 'underkow'
+        implementation group: 'org.jetbrains.exposed', name: 'exposed'
+        implementation group: 'mysql', name: 'mysql-connector-java'
     }
 
     shadowJar {

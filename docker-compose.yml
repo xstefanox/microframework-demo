@@ -10,3 +10,13 @@ services:
       MONGO_INITDB_DATABASE: userdb
     ports:
       - 10000:27017
+
+  mysql:
+    image: mysql:8.0.15
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: purchasedb
+    ports:
+      - 10001:3306

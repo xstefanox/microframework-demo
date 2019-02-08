@@ -8,4 +8,4 @@ fun randomId() : Id {
     return Id(randomUUID())
 }
 
-fun String.toID(): Id = Id(this)
+fun String.toId(): Id = Id(this)

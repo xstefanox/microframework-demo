@@ -4,7 +4,7 @@ import com.mongodb.async.client.MongoCollection
 import com.mongodb.async.client.MongoDatabase
 import io.github.xstefanox.demo.mf.core.randomId
 import io.github.xstefanox.demo.mf.core.randomString
-import io.github.xstefanox.demo.mf.core.toID
+import io.github.xstefanox.demo.mf.core.toId
 import io.undertow.server.HttpServerExchange
 import io.undertow.util.Headers.CONTENT_TYPE
 import io.undertow.util.PathTemplateMatch
@@ -36,7 +36,7 @@ class UserController(private val mongoDB: MongoDatabase) {
 
     suspend fun getOne(exchange: HttpServerExchange) {
 
-        val id = exchange.path.getValue("userId").toID()
+        val id = exchange.path.getValue("userId").toId()
         val user = users2.findOneById(id)
 
         exchange.responseHeaders.put(CONTENT_TYPE, "text/plain")
@@ -66,7 +66,7 @@ class UserController(private val mongoDB: MongoDatabase) {
 
     suspend fun delete(exchange: HttpServerExchange) {
 
-        val id = exchange.path.getValue("userId").toID()
+        val id = exchange.path.getValue("userId").toId()
 
         val result = users2.deleteOneById(id)!!
 
