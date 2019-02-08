@@ -2,6 +2,7 @@ package io.github.xstefanox.demo.mf.rest.purchase
 
 import io.github.xstefanox.demo.mf.core.randomId
 import io.github.xstefanox.demo.mf.core.randomString
+import io.github.xstefanox.demo.mf.rest.purchase.Purchase.State.NEW
 import io.undertow.server.HttpServerExchange
 import io.undertow.util.Headers.CONTENT_TYPE
 import io.undertow.util.PathTemplateMatch
@@ -56,7 +57,8 @@ class PurchaseController(private val database: Database) {
         val purchase = Purchase(
             randomId(),
             randomString(),
-            0
+            0,
+            NEW
         )
 
         transaction(database) {
@@ -64,6 +66,7 @@ class PurchaseController(private val database: Database) {
                 row[id] = purchase.id.toString()
                 row[name] = purchase.name
                 row[amount] = purchase.amount
+                row[state] = purchase.state
             }
         }
 

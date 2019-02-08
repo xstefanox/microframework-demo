@@ -8,6 +8,8 @@ import io.github.xstefanox.underkow.undertow
 import io.undertow.Undertow
 import io.undertow.server.HttpServerExchange
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -38,7 +40,14 @@ val REST_MODULE = Kodein.Module("REST") {
     }
 
     bind<Database>() with singleton {
-        Database.connect(instance<RestConfiguration>().db.toString(), driver = "com.mysql.cj.jdbc.Driver")
+
+        val database = Database.connect(instance<RestConfiguration>().db.toString(), driver = "com.mysql.cj.jdbc.Driver")
+
+        transaction(database) {
+            SchemaUtils.create(Purchases)
+        }
+
+        database
     }
 }
 

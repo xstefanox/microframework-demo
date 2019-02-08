@@ -9,6 +9,7 @@ fun ResultRow.toPurchase() : Purchase {
     return Purchase(
         Id(this[Purchases.id]),
         this[Purchases.name],
-        this[Purchases.amount]
+        this[Purchases.amount],
+        this[Purchases.state]
     )
 }
