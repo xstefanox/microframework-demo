@@ -82,6 +82,7 @@ project(':platform') {
             api group: 'io.kotlintest', name: 'kotlintest-runner-junit5', version: '3.2.1'
             api group: 'io.rest-assured', name: 'rest-assured', version: '3.3.0'
             api group: 'org.apache.camel', name: 'camel-core', version: '2.23.1'
+            api group: 'org.apache.camel', name: 'camel-rabbitmq', version: '2.23.1'
             api group: 'com.github.ajalt', name: 'clikt', version: '1.6.0'
             api group: 'org.litote.kmongo', name: 'kmongo-coroutine', version: '3.9.2'
             api group: 'org.jetbrains.exposed', name: 'exposed', version: '0.12.1'
@@ -166,6 +167,7 @@ project(':backend') {
         implementation platform(project(':platform'))
         implementation project(':core')
         implementation group: 'org.apache.camel', name: 'camel-core'
+        implementation group: 'org.apache.camel', name: 'camel-rabbitmq'
     }
 }
 

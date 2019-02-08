@@ -20,3 +20,11 @@ services:
       MYSQL_DATABASE: purchasedb
     ports:
       - 10001:3306
+
+  rabbitmq:
+    image: rabbitmq:3.7.11-management
+    environment:
+      RABBITMQ_DEFAULT_VHOST: messages
+    ports:
+      - 10002:5672
+      - 10003:15672
