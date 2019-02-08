@@ -20,7 +20,7 @@ val REST_MODULE = Kodein.Module("REST") {
 
     bind<RestConfiguration>() with singleton { RestConfiguration(loadConfiguration("rest")) }
 
-    bind<PurchaseController>() with singleton { PurchaseController(instance(), instance(), instance()) }
+    bind<PurchaseController>() with singleton { PurchaseController(instance()) }
 
     bind<Undertow>() with singleton {
 
@@ -64,6 +64,7 @@ val REST_MODULE = Kodein.Module("REST") {
 
         connectionFactory
     }
+    bind<PurchaseManager>() with singleton { PurchaseManager(instance(), instance(), instance()) }
 }
 
 val REST_KODEIN = Kodein {
