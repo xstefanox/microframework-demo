@@ -1,12 +1,12 @@
-package io.github.xstefanox.demo.mf.rest.purchase
+package io.github.xstefanox.demo.mf.core
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.ConnectionFactory
-import io.github.xstefanox.demo.mf.core.Id
-import io.github.xstefanox.demo.mf.core.randomId
-import io.github.xstefanox.demo.mf.core.randomString
+import io.github.xstefanox.demo.mf.core.purchase.Purchase
+import io.github.xstefanox.demo.mf.core.purchase.Purchases
+import io.github.xstefanox.demo.mf.core.purchase.toPurchase
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder.ASC

@@ -2,15 +2,12 @@
 
 package io.github.xstefanox.demo.mf.rest.purchase
 
-import com.rabbitmq.client.ConnectionFactory
 import io.github.xstefanox.demo.mf.core.CORE_MODULE
+import io.github.xstefanox.demo.mf.core.PurchaseManager
 import io.github.xstefanox.demo.mf.core.loadConfiguration
 import io.github.xstefanox.underkow.undertow
 import io.undertow.Undertow
 import io.undertow.server.HttpServerExchange
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -40,30 +37,6 @@ val REST_MODULE = Kodein.Module("REST") {
         }
     }
 
-    bind<Database>() with singleton {
-
-        val database = Database.connect(instance<RestConfiguration>().db.toString(), driver = "com.mysql.cj.jdbc.Driver")
-
-        transaction(database) {
-            SchemaUtils.create(Purchases)
-        }
-
-        database
-    }
-
-    bind<ConnectionFactory>() with singleton {
-
-        val rabbitmq = instance<RestConfiguration>().rabbitmq
-
-        val connectionFactory = ConnectionFactory()
-        connectionFactory.username = rabbitmq.username
-        connectionFactory.password = rabbitmq.password
-        connectionFactory.host = rabbitmq.hostname
-        connectionFactory.port = rabbitmq.port
-        connectionFactory.virtualHost = rabbitmq.vhost
-
-        connectionFactory
-    }
     bind<PurchaseManager>() with singleton { PurchaseManager(instance(), instance(), instance()) }
 }
 

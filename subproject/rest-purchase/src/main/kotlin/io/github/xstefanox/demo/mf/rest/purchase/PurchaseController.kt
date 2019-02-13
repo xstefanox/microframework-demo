@@ -1,5 +1,6 @@
 package io.github.xstefanox.demo.mf.rest.purchase
 
+import io.github.xstefanox.demo.mf.core.PurchaseManager
 import io.github.xstefanox.demo.mf.core.toId
 import io.undertow.server.HttpServerExchange
 import io.undertow.util.Headers.CONTENT_TYPE

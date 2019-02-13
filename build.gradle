@@ -97,6 +97,10 @@ project(':core') {
     dependencies {
         implementation platform(project(':platform'))
         implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+        implementation group: 'mysql', name: 'mysql-connector-java'
+        api group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+        api group: 'org.jetbrains.exposed', name: 'exposed'
+        api group: 'com.rabbitmq', name: 'amqp-client'
     }
 }
 
@@ -150,10 +154,6 @@ project(':rest-purchase') {
         implementation project(':core')
         implementation group: 'io.undertow', name: 'undertow-core'
         implementation group: 'io.github.xstefanox', name: 'underkow'
-        implementation group: 'org.jetbrains.exposed', name: 'exposed'
-        implementation group: 'mysql', name: 'mysql-connector-java'
-        implementation group: 'com.rabbitmq', name: 'amqp-client'
-        implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
     }
 
     shadowJar {

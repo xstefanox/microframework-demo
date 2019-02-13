@@ -1,4 +1,4 @@
-package io.github.xstefanox.demo.mf.rest.purchase
+package io.github.xstefanox.demo.mf.core.purchase
 
 import io.github.xstefanox.demo.mf.core.Id
 
