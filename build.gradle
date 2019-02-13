@@ -67,7 +67,7 @@ subprojects {
     }
 }
 
-project(':platform') {
+project(':parent') {
 
     dependencies {
         constraints {
@@ -95,7 +95,7 @@ project(':platform') {
 
 project(':core') {
     dependencies {
-        implementation platform(project(':platform'))
+        implementation platform(project(':parent'))
         implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
         implementation group: 'mysql', name: 'mysql-connector-java'
         api group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
@@ -113,7 +113,7 @@ project(':rest-user') {
     mainClassName = 'io.github.xstefanox.demo.mf.rest.user.Main'
 
     dependencies {
-        implementation platform(project(':platform'))
+        implementation platform(project(':parent'))
         implementation project(':core')
         implementation group: 'io.undertow', name: 'undertow-core'
         implementation group: 'io.github.xstefanox', name: 'underkow'
@@ -140,7 +140,7 @@ project(':rest-purchase') {
     mainClassName = 'io.github.xstefanox.demo.mf.rest.purchase.Main'
 
     dependencies {
-        implementation platform(project(':platform'))
+        implementation platform(project(':parent'))
         implementation project(':core')
         implementation group: 'io.undertow', name: 'undertow-core'
         implementation group: 'io.github.xstefanox', name: 'underkow'
@@ -159,7 +159,7 @@ project(':rest-purchase') {
 
 project(':backend') {
     dependencies {
-        implementation platform(project(':platform'))
+        implementation platform(project(':parent'))
         implementation project(':core')
         implementation group: 'org.apache.camel', name: 'camel-core'
         implementation group: 'org.apache.camel', name: 'camel-rabbitmq'
@@ -174,7 +174,7 @@ project(':cli') {
     mainClassName = 'io.github.xstefanox.demo.mf.cli.Main'
 
     dependencies {
-        implementation platform(project(':platform'))
+        implementation platform(project(':parent'))
         implementation project(':core')
         implementation group: 'com.github.ajalt', name: 'clikt', version: '1.6.0'
     }
