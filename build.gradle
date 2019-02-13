@@ -180,25 +180,7 @@ project(':cli') {
     }
 }
 
-project(':service') {
-
-    apply plugin: 'application'
-    apply plugin: 'com.github.johnrengelman.shadow'
-
-    mainClassName = 'io.github.xstefanox.demo.mf.Main'
-
-    dependencies {
-        implementation platform(project(':platform'))
-        implementation project(':core')
-        implementation project(':backend')
-        implementation project(':rest')
-
-        testImplementation group: 'io.rest-assured', name: 'rest-assured'
-    }
-}
-
 task shadow {
-    dependsOn("service:shadowJar")
     dependsOn("cli:shadowJar")
     dependsOn("rest-user:shadowJar")
     dependsOn("rest-purchase:shadowJar")
