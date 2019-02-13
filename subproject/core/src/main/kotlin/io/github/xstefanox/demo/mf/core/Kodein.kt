@@ -8,6 +8,7 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import io.github.xstefanox.demo.mf.core.configuration.MySqlConfiguration
 import io.github.xstefanox.demo.mf.core.configuration.RabbitMqConfiguration
+import io.github.xstefanox.demo.mf.core.purchase.PurchaseManager
 import io.github.xstefanox.demo.mf.core.purchase.Purchases
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -74,4 +75,6 @@ val CORE_MODULE = Kodein.Module("CORE") {
 
         connectionFactory
     }
+
+    bind<PurchaseManager>() with singleton { PurchaseManager(instance(), instance(), instance()) }
 }

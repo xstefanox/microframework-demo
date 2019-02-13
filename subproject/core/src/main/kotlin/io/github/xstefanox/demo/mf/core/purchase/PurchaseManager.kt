@@ -1,16 +1,15 @@
-package io.github.xstefanox.demo.mf.core
+package io.github.xstefanox.demo.mf.core.purchase
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.ConnectionFactory
-import io.github.xstefanox.demo.mf.core.purchase.Purchase
-import io.github.xstefanox.demo.mf.core.purchase.Purchases
-import io.github.xstefanox.demo.mf.core.purchase.toPurchase
+import io.github.xstefanox.demo.mf.core.Id
+import io.github.xstefanox.demo.mf.core.randomId
+import io.github.xstefanox.demo.mf.core.randomString
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder.ASC
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
@@ -87,10 +86,10 @@ class PurchaseManager(
         return count > 0
     }
 
-    fun setState(id: Id, state: Purchase.State) {
+    fun setState(id: Id, newState: Purchase.State) {
         transaction(database) {
-            Purchases.update {
-                Purchases.id eq id.toString()
+            Purchases.update({ Purchases.id eq id.toString() }) {
+                it[state] = newState
             }
         }
     }

@@ -83,6 +83,7 @@ project(':parent') {
             api group: 'io.rest-assured', name: 'rest-assured', version: '3.3.0'
             api group: 'org.apache.camel', name: 'camel-core', version: '2.23.1'
             api group: 'org.apache.camel', name: 'camel-rabbitmq', version: '2.23.1'
+            api group: 'org.apache.camel', name: 'camel-jackson', version: '2.23.1'
             api group: 'com.github.ajalt', name: 'clikt', version: '1.6.0'
             api group: 'org.litote.kmongo', name: 'kmongo-coroutine', version: '3.9.2'
             api group: 'org.jetbrains.exposed', name: 'exposed', version: '0.12.1'
@@ -158,13 +159,33 @@ project(':rest-purchase') {
 }
 
 project(':backend') {
+
+    apply plugin: 'application'
+    apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'com.palantir.docker'
+
+    mainClassName = 'io.github.xstefanox.demo.mf.backend.Main'
+
     dependencies {
         implementation platform(project(':parent'))
         implementation project(':core')
         implementation group: 'org.apache.camel', name: 'camel-core'
         implementation group: 'org.apache.camel', name: 'camel-rabbitmq'
+        implementation group: 'org.apache.camel', name: 'camel-jackson'
+    }
+
+    shadowJar {
+        archiveBaseName.set('service')
+    }
+
+    docker {
+        name = "xstefanox/backend"
+        files tasks.shadowJar.outputs
+        buildArgs([jar: "service.jar"])
     }
 }
+
+println(project.file('foo'))
 
 project(':cli') {
 

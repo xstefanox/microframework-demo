@@ -3,7 +3,7 @@
 package io.github.xstefanox.demo.mf.rest.purchase
 
 import io.github.xstefanox.demo.mf.core.CORE_MODULE
-import io.github.xstefanox.demo.mf.core.PurchaseManager
+import io.github.xstefanox.demo.mf.core.purchase.PurchaseManager
 import io.github.xstefanox.demo.mf.core.loadConfiguration
 import io.github.xstefanox.underkow.undertow
 import io.undertow.Undertow
@@ -36,8 +36,6 @@ val REST_MODULE = Kodein.Module("REST") {
             }
         }
     }
-
-    bind<PurchaseManager>() with singleton { PurchaseManager(instance(), instance(), instance()) }
 }
 
 val REST_KODEIN = Kodein {

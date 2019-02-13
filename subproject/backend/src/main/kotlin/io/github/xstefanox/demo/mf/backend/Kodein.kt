@@ -15,7 +15,9 @@ val BACKEND_MODULE = Kodein.Module("BACKEND") {
 
     bind<BackendService>() with singleton { BackendService(instance(), instance()) }
 
-    bind<PurchaseRouteBuilder>() with singleton { PurchaseRouteBuilder(instance<BackendConfiguration>().rabbitmq) }
+    bind<PurchaseRouteBuilder>() with singleton { PurchaseRouteBuilder(instance(), instance(), instance()) }
+
+    bind<PurchaseProcessor>() with singleton { PurchaseProcessor(instance()) }
 }
 
 val BACKEND_KODEIN = Kodein {
