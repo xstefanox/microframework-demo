@@ -104,16 +104,6 @@ project(':core') {
     }
 }
 
-project(':rest') {
-    dependencies {
-        implementation platform(project(':platform'))
-        implementation project(':core')
-        implementation group: 'io.undertow', name: 'undertow-core'
-
-        testImplementation group: 'io.rest-assured', name: 'rest-assured'
-    }
-}
-
 project(':rest-user') {
 
     apply plugin: 'application'
