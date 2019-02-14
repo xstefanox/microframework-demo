@@ -10,6 +10,13 @@ services:
       MONGO_INITDB_DATABASE: userdb
     ports:
       - 10000:27017
+    depends_on:
+      - fluentd
+    logging:
+      driver: fluentd
+      options:
+        tag: rabbitmq
+        fluentd-address: localhost:10004
 
   mysql:
     image: mysql:8.0.15
@@ -20,6 +27,13 @@ services:
       MYSQL_DATABASE: purchasedb
     ports:
       - 10001:3306
+    depends_on:
+      - fluentd
+    logging:
+      driver: fluentd
+      options:
+        tag: rabbitmq
+        fluentd-address: localhost:10004
 
   rabbitmq:
     image: rabbitmq:3.7.11-management
@@ -28,3 +42,16 @@ services:
     ports:
       - 10002:5672
       - 10003:15672
+    depends_on:
+      - fluentd
+    logging:
+      driver: fluentd
+      options:
+        tag: rabbitmq
+        fluentd-address: localhost:10004
+
+  fluentd:
+    image: fluent/fluentd:v1.3.3-1.0
+    ports:
+      - 10004:24224
+      - 10004:24224/udp
