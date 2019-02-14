@@ -60,7 +60,7 @@ val CORE_MODULE = Kodein.Module("CORE") {
 
         val configuration = instance<MongoConfiguration>()
 
-        KMongo.createClient(configuration.toURL().toString())
+        KMongo.createClient(configuration.toURI().toString())
             .getDatabase(configuration.database)
     }
 

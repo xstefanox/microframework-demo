@@ -1,7 +1,7 @@
 package io.github.xstefanox.demo.mf.core.configuration
 
 import com.typesafe.config.Config
-import java.net.URL
+import java.net.URI
 
 data class MongoConfiguration(
     val username: String,
@@ -18,7 +18,7 @@ data class MongoConfiguration(
         database = config.getString("database")
     )
 
-    fun toURL() : URL {
-        return URL("mongodb://$username:$password@$hostname:$port/$database")
+    fun toURI() : URI {
+        return URI("mongodb://$username:$password@$hostname:$port/$database")
     }
 }
