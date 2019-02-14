@@ -53,7 +53,13 @@ services:
   fluentd:
     build: ./docker/fluentd
     environment:
-      ELASTICSEARCH_PORT: 10005
+      ELASTICSEARCH_HOST: elasticsearch
+      ELASTICSEARCH_PORT: 9200
     ports:
       - 10004:24224
       - 10004:24224/udp
+
+  elasticsearch:
+    image: elasticsearch:6.6.0
+    ports:
+      - 10005:9200
