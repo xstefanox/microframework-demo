@@ -51,7 +51,9 @@ services:
         fluentd-address: localhost:10004
 
   fluentd:
-    image: fluent/fluentd:v1.3.3-1.0
+    build: ./docker/fluentd
+    environment:
+      ELASTICSEARCH_PORT: 10005
     ports:
       - 10004:24224
       - 10004:24224/udp
