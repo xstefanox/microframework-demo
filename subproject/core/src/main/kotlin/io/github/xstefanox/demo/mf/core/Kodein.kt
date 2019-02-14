@@ -3,9 +3,11 @@
 package io.github.xstefanox.demo.mf.core
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.mongodb.async.client.MongoDatabase
 import com.rabbitmq.client.ConnectionFactory
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
+import io.github.xstefanox.demo.mf.core.configuration.MongoConfiguration
 import io.github.xstefanox.demo.mf.core.configuration.MySqlConfiguration
 import io.github.xstefanox.demo.mf.core.configuration.RabbitMqConfiguration
 import io.github.xstefanox.demo.mf.core.purchase.PurchaseManager
@@ -17,6 +19,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
+import org.litote.kmongo.async.KMongo
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
 import java.nio.file.Files
@@ -47,13 +50,24 @@ val CORE_MODULE = Kodein.Module("CORE") {
         RabbitMqConfiguration(config.getConfig("rabbitmq"))
     }
 
+    bind<MongoConfiguration>() with singleton {
+        MongoConfiguration(config.getConfig("mongodb"))
+    }
+
     bind<ObjectMapper>() with singleton { ObjectMapper() }
+
+    bind<MongoDatabase>() with singleton {
+
+        val configuration = instance<MongoConfiguration>()
+
+        KMongo.createClient(configuration.toURL().toString())
+            .getDatabase(configuration.database)
+    }
 
     bind<Database>() with singleton {
 
         val configuration = instance<MySqlConfiguration>()
-        val url = "jdbc:mysql://${configuration.user}:${configuration.password}@${configuration.host}:${configuration.port}/${configuration.schema}"
-        val database = Database.connect(url, driver = "com.mysql.cj.jdbc.Driver")
+        val database = Database.connect(configuration.toURL().toString(), driver = "com.mysql.cj.jdbc.Driver")
 
         transaction(database) {
             SchemaUtils.create(Purchases)

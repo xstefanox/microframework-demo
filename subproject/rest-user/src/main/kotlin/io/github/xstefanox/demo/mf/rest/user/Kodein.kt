@@ -37,10 +37,6 @@ val REST_MODULE = Kodein.Module("REST") {
             }
         }
     }
-
-    bind<MongoDatabase>() with singleton {
-        KMongo.createClient(instance<RestConfiguration>().db.toString()).getDatabase("userdb")
-    }
 }
 
 val REST_KODEIN = Kodein {
