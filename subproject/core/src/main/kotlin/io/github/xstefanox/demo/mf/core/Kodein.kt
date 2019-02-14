@@ -67,7 +67,7 @@ val CORE_MODULE = Kodein.Module("CORE") {
     bind<Database>() with singleton {
 
         val configuration = instance<MySqlConfiguration>()
-        val database = Database.connect(configuration.toURL().toString(), driver = "com.mysql.cj.jdbc.Driver")
+        val database = Database.connect(configuration.toURI().toString(), driver = "com.mysql.cj.jdbc.Driver")
 
         transaction(database) {
             SchemaUtils.create(Purchases)

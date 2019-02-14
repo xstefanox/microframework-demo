@@ -1,7 +1,7 @@
 package io.github.xstefanox.demo.mf.core.configuration
 
 import com.typesafe.config.Config
-import java.net.URL
+import java.net.URI
 
 data class MySqlConfiguration(
     val username: String,
@@ -18,7 +18,7 @@ data class MySqlConfiguration(
         schema = config.getString("schema")
     )
 
-    fun toURL() : URL {
-        return URL("jdbc:mysql://$username:$password@$hostname:$port/$schema")
+    fun toURI() : URI {
+        return URI("jdbc:mysql://$username:$password@$hostname:$port/$schema")
     }
 }
