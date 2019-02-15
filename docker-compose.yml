@@ -74,3 +74,21 @@ services:
       - 10006:5601
     depends_on:
       - elasticsearch
+
+  traefik:
+    image: traefik:1.7.9-alpine
+    ports:
+      - 10007:8080
+      - 10008:80
+    volumes:
+      - //var/run/docker.sock:/var/run/docker.sock
+      - ./docker/traefik/traefik.toml:/etc/traefik/traefik.toml
+
+  whoami:
+    image: jwilder/whoami
+    labels:
+      traefik.enable: true
+      traefik.domain: example.org
+      traefik.backend: whoami
+      traefik.frontend.whiteList.useXForwardedFor: true
+      traefik.frontend.rule: Host:whoami.example.org
