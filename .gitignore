@@ -4,3 +4,4 @@
 /subproject/*/build/
 /subproject/*/out/
 application.conf
+/subproject/ui/node_modules/

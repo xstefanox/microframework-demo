@@ -92,3 +92,10 @@ services:
       traefik.backend: whoami
       traefik.frontend.whiteList.useXForwardedFor: true
       traefik.frontend.rule: Host:whoami.example.org
+
+  nginx:
+    image: nginx:1.15.8-alpine
+    ports:
+      - 10009:80
+    volumes:
+      - ./subproject/ui/src:/usr/share/nginx/html:ro
