@@ -1,4 +1,4 @@
-FROM openjdk:8u191-jre-alpine3.8
+FROM openjdk:8u191-jre-alpine3.9
 ARG jar=build/libs/service.jar
 EXPOSE 8080
 RUN apk update && apk upgrade
